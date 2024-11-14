@@ -6,12 +6,17 @@ import express, { Request, Response } from "express";
 var cors = require("cors");
 const app = express();
 
-app.use(express.json());
+app.use(express.json());  
+app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.get("/", (req: Request, res: Response) => res.send("Express on Vercel"));
 
-app.listen(3000, () => {
-  console.log(`Example app listening on port ${3000}`)
-})
+app.get("/api", (req: Request, res: Response) => {
+    res.json({ message: "Hello from Express API with TypeScript!" });
+});
+
+app.listen(3000, () => console.log("Server ready on port 3000.")); //! This stuff is useless
+
+// app.listen(3000, () => {
+//   console.log(`Example app listening on port ${3000}`)
+// })
