@@ -6,7 +6,7 @@ import express, { Request, Response } from "express";
 var cors = require("cors");
 const app = express();
 
-app.use(express.json());  
+app.use(express.json());
 app.use(cors());
 
 app.listen(3000, () => console.log("Server ready on port 3000.")); //! This stuff is useless, I think
