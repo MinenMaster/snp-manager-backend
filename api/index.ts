@@ -9,7 +9,9 @@ const app = express();
 app.use(express.json());  
 app.use(cors());
 
-app.get("/", (req: Request, res: Response) => res.send("Express on Vercel"));
+app.get("/", (req: Request, res: Response) => {
+    res.json({ message: "BaseURL!" });
+});
 
 app.get("/api", (req: Request, res: Response) => {
     res.json({ message: "Hello from Express API with TypeScript!" });
