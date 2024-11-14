@@ -19,6 +19,10 @@ app.get("/api", (req: Request, res: Response) => {
 
 app.listen(3000, () => console.log("Server ready on port 3000.")); //! This stuff is useless
 
+app.get("/passwords", (req: Request, res: Response) => {
+  res.send("Getting passwords...");
+});
+
 // app.listen(3000, () => {
 //   console.log(`Example app listening on port ${3000}`)
 // })
