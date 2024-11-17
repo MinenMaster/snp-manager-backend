@@ -5,9 +5,6 @@ import { encrypt } from "./encryption";
 
 export const createPassword = async (req: Request, res: Response) => {
     const user = authenticateJWT(req, res);
-
-    console.log(user);
-
     if (!user) return;
 
     const { title, username, password, url, notes, categoryId } = req.body;
@@ -19,18 +16,29 @@ export const createPassword = async (req: Request, res: Response) => {
     }
 
     try {
+        const userIdResult = await sql`
+            SELECT id FROM users WHERE username = ${user.username};
+        `;
+        const userId = userIdResult[0]?.id;
+
+        if (!userId) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         const encryptedPassword = encrypt(password);
 
         await sql`
             INSERT INTO snp_passwords 
                 (userId, title, username, password, url, notes, categoryId)
             VALUES 
-                (${user.id}, ${title}, ${username}, ${encryptedPassword}, ${url}, ${notes}, ${categoryId});
+                (${userId}, ${title}, ${username}, ${encryptedPassword}, ${url}, ${notes}, ${categoryId});
         `;
 
-        res.status(201).json({ message: "Password created successfully" });
+        return res
+            .status(201)
+            .json({ message: "Password created successfully" });
     } catch (err) {
         console.error("Error creating password:", err);
-        res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error" });
     }
 };
