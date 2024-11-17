@@ -3,6 +3,7 @@ import { registerUser } from "./register";
 import { loginUser } from "./login";
 import { authenticateJWT } from "./authenticateJWT";
 import { getPasswords } from "./getPasswords";
+import { createPassword } from "./createPassword";
 
 var cors = require("cors");
 const app = express();
@@ -27,3 +28,5 @@ app.get("/auth", (req: Request, res: Response) => {
 });
 
 app.get("/passwords", getPasswords);
+
+app.post("/passwords", createPassword);
