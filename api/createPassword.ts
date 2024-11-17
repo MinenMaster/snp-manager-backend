@@ -21,7 +21,9 @@ export const createPassword = async (req: Request, res: Response) => {
         const userIdResult = await sql`
             SELECT id FROM snp_users WHERE username = ${user.username};
         `;
-        const userId = userIdResult[0]?.id;
+        console.log(userIdResult);
+        const userId = userIdResult[0].id;
+        console.log(userId);
 
         if (!userId) {
             return res.status(404).json({ message: "User not found" });
