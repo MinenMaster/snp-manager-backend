@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { sql } from "@vercel/postgres";
+import { timestampISO } from "./timestamp";
 
 export const registerUser = async (req: Request, res: Response) => {
     const { username, password, email } = req.body;
@@ -22,7 +23,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await sql`INSERT INTO snp_users (username, hashed_password, email) VALUES (${username}, ${hashedPassword}, ${email})`;
+        await sql`INSERT INTO snp_users (username, hashed_password, email, createdAt) VALUES (${username}, ${hashedPassword}, ${email}, ${timestampISO})`;
 
         res.status(201).json({ message: "User registered successfully" });
     } catch (err) {
