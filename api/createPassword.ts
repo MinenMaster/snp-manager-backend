@@ -5,6 +5,9 @@ import { encrypt } from "./encryption";
 
 export const createPassword = async (req: Request, res: Response) => {
     const user = authenticateJWT(req, res);
+
+    console.log(user);
+
     if (!user) return;
 
     const { title, username, password, url, notes, categoryId } = req.body;
