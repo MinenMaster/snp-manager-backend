@@ -23,10 +23,12 @@ export const updatePassword = async (req: Request, res: Response) => {
         const updates: any[] = [];
         if (title !== undefined) updates.push(sql`title = ${title}`);
         if (username !== undefined) updates.push(sql`username = ${username}`);
-        if (password !== undefined) updates.push(sql`password = ${encrypt(password)}`);
+        if (password !== undefined)
+            updates.push(sql`password = ${encrypt(password)}`);
         if (url !== undefined) updates.push(sql`url = ${url}`);
         if (notes !== undefined) updates.push(sql`notes = ${notes}`);
-        if (categoryId !== undefined) updates.push(sql`"categoryId" = ${categoryId}`);
+        if (categoryId !== undefined)
+            updates.push(sql`"categoryId" = ${categoryId}`);
 
         if (updates.length === 0) {
             return res.status(400).json({ message: "No fields to update" });
@@ -34,7 +36,7 @@ export const updatePassword = async (req: Request, res: Response) => {
 
         const updatedPassword = await sql`
             UPDATE snp_passwords 
-            SET ${sql.join(updates, sql`, `)}
+            SET ${updates.join(", ")}
             WHERE 
                 id = ${id} AND userId = ${userId};
         `;
