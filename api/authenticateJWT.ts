@@ -8,9 +8,7 @@ export const authenticateJWT = (req, res) => {
         const token = authHeader.split(" ")[1];
         try {
             const user = jwt.verify(token, JWT_SECRET);
-            if (user) {
-                return true;
-            }
+            return user;
         } catch (error) {
             return res.status(403).json({ error: "Forbidden" });
         }
