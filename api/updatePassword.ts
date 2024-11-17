@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { sql } from "@vercel/postgres";
 import { authenticateJWT } from "./authenticateJWT";
 import { encrypt } from "./encryption";
+import { getCurrentTimestampISO } from "./timestamp";
 
 export const updatePassword = async (req: Request, res: Response) => {
     const user = authenticateJWT(req, res);
@@ -32,9 +33,9 @@ export const updatePassword = async (req: Request, res: Response) => {
                 url = COALESCE(${url}, url),
                 notes = COALESCE(${notes}, notes),
                 categoryId = COALESCE(${categoryId}, categoryId),
-                lastUpdatedAt = CURRENT_TIMESTAMP
+                lastUpdatedAt = ${getCurrentTimestampISO()}
             WHERE 
-                id = ${id} AND userId = ${user.id};
+                id = ${id} AND userId = ${userId};
         `;
 
         res.status(200).json({ message: "Password updated successfully" });
