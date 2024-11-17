@@ -33,4 +33,4 @@ app.get("/passwords", getPasswords);
 
 app.post("/passwords", createPassword);
 
-app.post("/passwords/:id", updatePassword);
+app.put("/passwords/:id", updatePassword);
