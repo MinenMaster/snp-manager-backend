@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { sql } from "@vercel/postgres";
-import { timestampISO, timestampFormatted } from "./timestamp";
+import {
+    getCurrentTimestampISO,
+    getCurrentTimestampFormatted,
+} from "./timestamp";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -33,9 +36,8 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        // Update lastLogin timestamp
-        await sql`UPDATE snp_users SET lastLogin = ${timestampISO} WHERE id = ${user.id}`;
-        console.log(`${timestampISO} - (NEW) User ${user.username} logged in.`);
+        const currentTimestampISO = getCurrentTimestampISO();
+        await sql`UPDATE snp_users SET lastLogin = ${currentTimestampISO} WHERE id = ${user.id}`;
 
         const token = jwt.sign({ username: user.username }, JWT_SECRET, {
             expiresIn: "1h",
@@ -51,10 +53,12 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 const logLogin = async (username: string) => {
-    console.log(`[${timestampFormatted}] User ${username} logged in.`);
+    const currentTimestampFormatted = getCurrentTimestampFormatted();
+    console.log(`[${currentTimestampFormatted}] User ${username} logged in.`);
 
     try {
-        await sql`INSERT INTO snp_login_logs (username, timestamp) VALUES (${username}, ${timestampISO});`;
+        const currentTimestampISO = getCurrentTimestampISO();
+        await sql`INSERT INTO snp_login_logs (username, timestamp) VALUES (${username}, ${currentTimestampISO});`;
     } catch (err) {
         console.error("Error logging login to database:", err);
     }
