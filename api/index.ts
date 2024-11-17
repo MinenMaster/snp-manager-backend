@@ -22,11 +22,16 @@ app.post("/register", registerUser);
 app.post("/login", loginUser);
 
 app.get("/auth", (req: Request, res: Response) => {
-    if (authenticateJWT(req, res)) {
-        return res.status(200).json({ message: "Authenticated" });
+    const user = authenticateJWT(req, res);
+    if (user) {
+        return res.status(200).json(user);
     }
 });
 
 app.get("/passwords", getPasswords);
 
 app.post("/passwords", createPassword);
+
+// app.get("/passwords/:id", (req: Request, res: Response) => {
+//     if (!authenticateJWT(req, res)) return;
+// });

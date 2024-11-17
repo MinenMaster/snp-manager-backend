@@ -7,6 +7,8 @@ export const createPassword = async (req: Request, res: Response) => {
     const user = authenticateJWT(req, res);
     if (!user) return;
 
+    console.log(user.username);
+
     const { title, username, password, url, notes, categoryId } = req.body;
 
     if (!title || !password) {
