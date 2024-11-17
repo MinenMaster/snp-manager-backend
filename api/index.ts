@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
-// import jwt from "jsonwebtoken";
-// import bcrypt from "bcryptjs";
-// import { sql } from "@vercel/postgres";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { sql } from "@vercel/postgres";
 
 var cors = require("cors");
 const app = express();
@@ -13,8 +13,4 @@ app.listen(3000, () => console.log("Server ready on port 3000.")); //! This stuf
 
 app.get("/", (req: Request, res: Response) => {
     res.json({ message: "This is the SNP-Manager-API base url." });
-});
-
-app.get("/api", (req: Request, res: Response) => {
-    res.json({ message: "Hello from Express API with TypeScript!" });
 });
