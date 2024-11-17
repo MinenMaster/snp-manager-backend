@@ -17,7 +17,7 @@ export const createPassword = async (req: Request, res: Response) => {
 
     try {
         const userIdResult = await sql`
-            SELECT id FROM users WHERE username = ${user.username};
+            SELECT id FROM snp_users WHERE username = ${user.username};
         `;
         const userId = userIdResult[0]?.id;
 
@@ -27,16 +27,14 @@ export const createPassword = async (req: Request, res: Response) => {
 
         const encryptedPassword = encrypt(password);
 
-        await sql`
+        const newPassword = await sql`
             INSERT INTO snp_passwords 
                 (userId, title, username, password, url, notes, categoryId)
             VALUES 
                 (${userId}, ${title}, ${username}, ${encryptedPassword}, ${url}, ${notes}, ${categoryId});
         `;
 
-        return res
-            .status(201)
-            .json({ message: "Password created successfully" });
+        return res.status(201).json(newPassword);
     } catch (err) {
         console.error("Error creating password:", err);
         return res.status(500).json({ message: "Internal server error" });
