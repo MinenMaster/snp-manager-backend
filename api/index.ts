@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { registerUser } from "./register";
 import { loginUser } from "./login";
 import { authenticateJWT } from "./authenticateJWT";
+import { getPasswords } from "./getPasswords";
 
 var cors = require("cors");
 const app = express();
@@ -24,3 +25,5 @@ app.get("/auth", (req: Request, res: Response) => {
         return res.status(200).json({ message: "Authenticated" });
     }
 });
+
+app.get("/passwords", getPasswords);
