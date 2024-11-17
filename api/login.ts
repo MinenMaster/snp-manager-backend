@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { sql } from "@vercel/postgres";
-import moment from "moment-timezone";
+import { timestampISO, timestampFormatted } from "./timestamp";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -42,14 +42,6 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 const logLogin = async (username: string) => {
-    const timeZone = "Europe/Zurich";
-
-    const timestampISO = moment().tz(timeZone).format("YYYY-MM-DD HH:mm:ss");
-
-    const timestampFormatted = moment()
-        .tz(timeZone)
-        .format("DD.MM.YYYY HH:mm:ss (Z)");
-
     console.log(`[${timestampFormatted}] User ${username} logged in.`);
 
     try {
