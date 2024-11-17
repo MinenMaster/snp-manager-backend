@@ -6,8 +6,6 @@ import { authenticateJWT } from "./authenticateJWT";
 var cors = require("cors");
 const app = express();
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
 app.use(express.json());
 app.use(cors());
 
