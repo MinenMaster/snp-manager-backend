@@ -4,6 +4,7 @@ import { loginUser } from "./login";
 import { authenticateJWT } from "./authenticateJWT";
 import { getPasswords } from "./getPasswords";
 import { createPassword } from "./createPassword";
+import { updatePassword } from "./updatePassword";
 
 var cors = require("cors");
 const app = express();
@@ -32,6 +33,4 @@ app.get("/passwords", getPasswords);
 
 app.post("/passwords", createPassword);
 
-// app.get("/passwords/:id", (req: Request, res: Response) => {
-//     if (!authenticateJWT(req, res)) return;
-// });
+app.post("/passwords/:id", updatePassword);
