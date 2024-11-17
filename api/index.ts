@@ -1,10 +1,7 @@
 import express, { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { sql } from "@vercel/postgres";
-import moment from "moment-timezone";
 import { registerUser } from "./register";
 import { loginUser } from "./login";
+import { authenticateJWT } from "./authenticateJWT";
 
 var cors = require("cors");
 const app = express();
@@ -23,3 +20,9 @@ app.get("/", (req: Request, res: Response) => {
 app.post("/register", registerUser);
 
 app.post("/login", loginUser);
+
+app.get("/auth", (req: Request, res: Response) => {
+    if (authenticateJWT(req, res)) {
+        return res.status(200).json({ message: "Authenticated" });
+    }
+});
