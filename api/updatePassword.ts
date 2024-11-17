@@ -20,25 +20,24 @@ export const updatePassword = async (req: Request, res: Response) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const updates: any[] = [];
-        if (title !== undefined) updates.push(sql`title = ${title}`);
-        if (username !== undefined) updates.push(sql`username = ${username}`);
-        if (password !== undefined)
-            updates.push(sql`password = ${encrypt(password)}`);
-        if (url !== undefined) updates.push(sql`url = ${url}`);
-        if (notes !== undefined) updates.push(sql`notes = ${notes}`);
-        if (categoryId !== undefined)
-            updates.push(sql`"categoryId" = ${categoryId}`);
+        const updates: { [key: string]: any } = {};
+        if (title !== undefined) updates.title = title;
+        if (username !== undefined) updates.username = username;
+        if (password !== undefined) updates.password = encrypt(password);
+        if (url !== undefined) updates.url = url;
+        if (notes !== undefined) updates.notes = notes;
+        if (categoryId !== undefined) updates.categoryId = categoryId;
 
-        if (updates.length === 0) {
+        if (Object.keys(updates).length === 0) {
             return res.status(400).json({ message: "No fields to update" });
         }
 
         const updatedPassword = await sql`
-            UPDATE snp_passwords 
-            SET ${updates.join(", ")}
-            WHERE 
-                id = ${id} AND userId = ${userId};
+            UPDATE snp_passwords
+            SET ${Object.keys(updates)
+                .map((key) => `${key} = ${sql`${updates[key]}`}`)
+                .join(", ")}
+            WHERE id = ${id} AND userId = ${userId};
         `;
 
         if (updatedPassword.rowCount === 0) {
