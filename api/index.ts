@@ -89,7 +89,7 @@ app.post("/register", async (req: Request, res: Response) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await sql`INSERT INTO users (username, password) VALUES (${username}, ${hashedPassword})`;
+        await sql`INSERT INTO users (username, hashed_password) VALUES (${username}, ${hashedPassword})`;
 
         res.status(201).json({ message: "User registered successfully" });
     } catch (err) {
