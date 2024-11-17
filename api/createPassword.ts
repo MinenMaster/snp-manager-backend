@@ -7,8 +7,6 @@ export const createPassword = async (req: Request, res: Response) => {
     const user = authenticateJWT(req, res);
     if (!user) return;
 
-    console.log(user.username);
-
     const { title, username, password, url, notes, categoryId } = req.body;
 
     if (!title || !password) {
@@ -21,9 +19,7 @@ export const createPassword = async (req: Request, res: Response) => {
         const userIdResult = await sql`
             SELECT id FROM snp_users WHERE username = ${user.username};
         `;
-        console.log(userIdResult);
-        const userId = userIdResult[0].id;
-        console.log(userId);
+        const userId = userIdResult.rows[0].id;
 
         if (!userId) {
             return res.status(404).json({ message: "User not found" });
