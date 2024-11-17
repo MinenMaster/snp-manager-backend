@@ -38,6 +38,8 @@ export const updatePassword = async (req: Request, res: Response) => {
                 id = ${id} AND userId = ${userId};
         `;
 
+        //TODO - remove on update stuff on the database
+
         res.status(200).json({ message: "Password updated successfully" });
     } catch (err) {
         console.error("Error updating password:", err);
