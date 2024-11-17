@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { sql } from "@vercel/postgres";
 import { authenticateJWT } from "./authenticateJWT";
+import { decrypt } from "./encryption";
 
 export const getPasswords = async (req: Request, res: Response) => {
     const user = authenticateJWT(req, res);
@@ -28,7 +29,12 @@ export const getPasswords = async (req: Request, res: Response) => {
                 p.userId = ${user.id};
         `;
 
-        res.status(200).json(rows);
+        const decryptedRows = rows.map(row => ({
+            ...row,
+            password: decrypt(row.password)
+        }));
+
+        res.status(200).json(decryptedRows);
     } catch (err) {
         console.error("Error fetching passwords:", err);
         res.status(500).json({ message: "Internal server error" });
