@@ -8,6 +8,15 @@ export const getPasswords = async (req: Request, res: Response) => {
     if (!user) return;
 
     try {
+        const userIdResult = await sql`
+            SELECT id FROM snp_users WHERE username = ${user.username};
+        `;
+        const userId = userIdResult.rows[0].id;
+
+        if (!userId) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         const { rows } = await sql`
             SELECT 
                 p.id, 
@@ -26,12 +35,12 @@ export const getPasswords = async (req: Request, res: Response) => {
             ON 
                 p.categoryId = c.id
             WHERE 
-                p.userId = ${user.id};
+                p.userId = ${userId};
         `;
 
-        const decryptedRows = rows.map(row => ({
+        const decryptedRows = rows.map((row) => ({
             ...row,
-            password: decrypt(row.password)
+            password: decrypt(row.password),
         }));
 
         res.status(200).json(decryptedRows);
