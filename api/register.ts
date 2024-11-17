@@ -3,24 +3,26 @@ import bcrypt from "bcryptjs";
 import { sql } from "@vercel/postgres";
 
 export const registerUser = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
 
-    if (!username || !password) {
+    if (!username || !password || !email) {
         return res
             .status(400)
-            .json({ message: "Username and password are required" });
+            .json({ message: "Username, password and email are required" });
     }
 
     try {
         const existingUser =
-            await sql`SELECT * FROM snp_users WHERE username = ${username}`;
+            await sql`SELECT * FROM snp_users WHERE username = ${username} OR email = ${email}`;
         if (existingUser.rows.length > 0) {
-            return res.status(400).json({ message: "Username already exists" });
+            return res
+                .status(400)
+                .json({ message: "Username or email already exists" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await sql`INSERT INTO snp_users (username, hashed_password) VALUES (${username}, ${hashedPassword})`;
+        await sql`INSERT INTO snp_users (username, hashed_password, email) VALUES (${username}, ${hashedPassword}, ${email})`;
 
         res.status(201).json({ message: "User registered successfully" });
     } catch (err) {

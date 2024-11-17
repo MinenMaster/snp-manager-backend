@@ -7,37 +7,45 @@ import { timestampISO, timestampFormatted } from "./timestamp";
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export const loginUser = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { identifier, password } = req.body;
 
-    if (!username || !password) {
+    if (!identifier || !password) {
         return res
             .status(400)
-            .json({ message: "Username and password are required" });
+            .json({ message: "Identifier and password are required" });
     }
 
-    const { rows } =
-        await sql`SELECT * FROM snp_users WHERE username = ${username};`;
+    try {
+        const { rows } =
+            await sql`SELECT * FROM snp_users WHERE username = ${identifier} OR email = ${identifier}`;
 
-    if (rows.length > 0) {
+        if (rows.length === 0) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+
         const user = rows[0];
-        const isValidPassword = await bcrypt.compare(
+
+        const validPassword = await bcrypt.compare(
             password,
             user.hashed_password
         );
-
-        if (isValidPassword) {
-            const token = jwt.sign({ username: user.username }, JWT_SECRET, {
-                expiresIn: "1h",
-            });
-
-            await logLogin(user.username);
-
-            res.json({ token });
-        } else {
-            res.status(401).json({ message: "Invalid credentials" });
+        if (!validPassword) {
+            return res.status(400).json({ message: "Invalid credentials" });
         }
-    } else {
-        res.status(401).json({ message: "Invalid credentials" });
+
+        // Update lastLogin timestamp
+        await sql`UPDATE snp_users SET lastLogin = ${timestampISO} WHERE id = ${user.id}`;
+
+        const token = jwt.sign({ username: user.username }, JWT_SECRET, {
+            expiresIn: "1h",
+        });
+
+        await logLogin(user.username);
+
+        res.json({ token });
+    } catch (err) {
+        console.error("Error logging in user:", err);
+        res.status(500).json({ message: "Internal server error" });
     }
 };
 
