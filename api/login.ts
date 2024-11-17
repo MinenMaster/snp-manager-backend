@@ -35,6 +35,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
         // Update lastLogin timestamp
         await sql`UPDATE snp_users SET lastLogin = ${timestampISO} WHERE id = ${user.id}`;
+        console.log(`${timestampISO} - (NEW) User ${user.username} logged in.`);
 
         const token = jwt.sign({ username: user.username }, JWT_SECRET, {
             expiresIn: "1h",
