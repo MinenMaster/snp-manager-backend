@@ -20,52 +20,30 @@ export const updatePassword = async (req: Request, res: Response) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Dynamische SQL-Konstruktion
-        const updates: string[] = [];
-        const values: any[] = [];
-
-        if (title !== undefined) {
-            updates.push(`title = $${updates.length + 1}`);
-            values.push(title);
-        }
-        if (username !== undefined) {
-            updates.push(`username = $${updates.length + 1}`);
-            values.push(username);
-        }
-        if (password !== undefined) {
-            updates.push(`password = $${updates.length + 1}`);
-            values.push(encrypt(password));
-        }
-        if (url !== undefined) {
-            updates.push(`url = $${updates.length + 1}`);
-            values.push(url);
-        }
-        if (notes !== undefined) {
-            updates.push(`notes = $${updates.length + 1}`);
-            values.push(notes);
-        }
-        if (categoryId !== undefined) {
-            updates.push(`"categoryId" = $${updates.length + 1}`);
-            values.push(categoryId);
-        }
+        // Dynamische Updates mit vorbereiteten Feldern
+        const updates = [];
+        if (title !== undefined) updates.push(sql`title = ${title}`);
+        if (username !== undefined) updates.push(sql`username = ${username}`);
+        if (password !== undefined)
+            updates.push(sql`password = ${encrypt(password)}`);
+        if (url !== undefined) updates.push(sql`url = ${url}`);
+        if (notes !== undefined) updates.push(sql`notes = ${notes}`);
+        if (categoryId !== undefined)
+            updates.push(sql`"categoryId" = ${categoryId}`);
 
         if (updates.length === 0) {
             return res.status(400).json({ message: "No fields to update" });
         }
 
-        // SQL-Update ausführen
-        const query = `
+        const query = sql`
             UPDATE snp_passwords
-            SET ${updates.join(", ")}
-            WHERE id = $${updates.length + 1} AND userId = $${
-            updates.length + 2
-        };
+            SET ${sql.join(updates, sql`, `)}
+            WHERE id = ${id} AND userId = ${userId};
         `;
-        values.push(id, userId);
 
-        const updatedPassword = await sql.raw(query, values);
+        const result = await query;
 
-        if (updatedPassword.rowCount === 0) {
+        if (result.rowCount === 0) {
             return res.status(404).json({ message: "Password not found" });
         }
 
