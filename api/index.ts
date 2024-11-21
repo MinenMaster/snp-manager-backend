@@ -6,6 +6,7 @@ import { getPasswords } from "./passwords/getPasswords";
 import { createPassword } from "./passwords/createPassword";
 import { updatePassword } from "./passwords/updatePassword";
 import { deletePassword } from "./passwords/deletePassword";
+import { getCategories } from "./categories/getCategories";
 
 var cors = require("cors");
 const app = express();
@@ -38,11 +39,7 @@ app.put("/passwords/:id", updatePassword);
 
 app.delete("/passwords/:id", deletePassword);
 
-app.get("/categories", (req: Request, res: Response) => {
-    res.json({ message: "This is the categories endpoint." });
-
-    // TODO: implement this endpoint
-});
+app.get("/categories", getCategories);
 
 app.post("/categories", (req: Request, res: Response) => {
     res.json({ message: "This is the categories endpoint." });
