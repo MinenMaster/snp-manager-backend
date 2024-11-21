@@ -31,7 +31,7 @@ export const getPasswords = async (req: Request, res: Response) => {
             FROM 
                 snp_passwords p
             LEFT JOIN 
-                snp_category c 
+                snp_categories c 
             ON 
                 p.categoryId = c.id
             WHERE 
