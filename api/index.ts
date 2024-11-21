@@ -7,6 +7,9 @@ import { createPassword } from "./passwords/createPassword";
 import { updatePassword } from "./passwords/updatePassword";
 import { deletePassword } from "./passwords/deletePassword";
 import { getCategories } from "./categories/getCategories";
+import { createCategory } from "./categories/createCategory";
+import { updateCategory } from "./categories/updateCategory";
+import { deleteCategory } from "./categories/deleteCategory";
 
 var cors = require("cors");
 const app = express();
@@ -41,17 +44,11 @@ app.delete("/passwords/:id", deletePassword);
 
 app.get("/categories", getCategories);
 
-app.post("/categories", (req: Request, res: Response) => {
-    res.json({ message: "This is the categories endpoint." });
+app.post("/categories", createCategory);
 
-    // TODO: implement this endpoint
-});
+app.put("/categories/:id", updateCategory);
 
-app.put("/categories/:id", (req: Request, res: Response) => {
-    res.json({ message: "This is the categories endpoint." });
-
-    // TODO: implement this endpoint
-});
+app.delete("/categories/:id", deleteCategory);
 
 app.get("/settings", (req: Request, res: Response) => {
     res.json({ message: "This is the settings endpoint." });
