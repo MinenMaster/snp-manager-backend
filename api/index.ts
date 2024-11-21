@@ -5,6 +5,7 @@ import { authenticateJWT } from "./tools/authenticateJWT";
 import { getPasswords } from "./passwords/getPasswords";
 import { createPassword } from "./passwords/createPassword";
 import { updatePassword } from "./passwords/updatePassword";
+import { deletePassword } from "./passwords/deletePassword";
 
 var cors = require("cors");
 const app = express();
@@ -35,11 +36,7 @@ app.post("/passwords", createPassword);
 
 app.put("/passwords/:id", updatePassword);
 
-app.delete("/passwords/:id", (req: Request, res: Response) => {
-    res.json({ message: "This is the passwords endpoint." });
-
-    // TODO: implement this endpoint
-});
+app.delete("/passwords/:id", deletePassword);
 
 app.get("/categories", (req: Request, res: Response) => {
     res.json({ message: "This is the categories endpoint." });
