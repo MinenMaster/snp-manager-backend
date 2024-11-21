@@ -2,14 +2,18 @@ import express, { Request, Response } from "express";
 import { registerUser } from "./login/register";
 import { loginUser } from "./login/login";
 import { authenticateJWT } from "./tools/authenticateJWT";
-import { getPasswords } from "./passwords/getPasswords";
-import { createPassword } from "./passwords/createPassword";
-import { updatePassword } from "./passwords/updatePassword";
-import { deletePassword } from "./passwords/deletePassword";
-import { getCategories } from "./categories/getCategories";
-import { createCategory } from "./categories/createCategory";
-import { updateCategory } from "./categories/updateCategory";
-import { deleteCategory } from "./categories/deleteCategory";
+import {
+    createPassword,
+    getPasswords,
+    updatePassword,
+    deletePassword,
+} from "./passwords";
+import {
+    createCategory,
+    getCategories,
+    updateCategory,
+    deleteCategory,
+} from "./categories";
 
 var cors = require("cors");
 const app = express();
