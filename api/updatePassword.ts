@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { sql } from "@vercel/postgres";
 import { authenticateJWT } from "./authenticateJWT";
-import { encrypt } from "./encryption";
+import { encrypt, decrypt } from "./encryption";
 import { getCurrentTimestampISO } from "./timestamp";
 
 export const updatePassword = async (req: Request, res: Response) => {
@@ -52,10 +52,10 @@ export const updatePassword = async (req: Request, res: Response) => {
             SELECT * FROM snp_passwords WHERE id = ${id} AND userId = ${userId};
         `;
 
-        // encrypt the password before sending it back
-        updatedPasswordResult.rows[0].password = encrypt(
-            updatedPasswordResult.rows[0].password
-        );
+        // decrypt the password before sending it back
+        updatedPasswordResult.rows[0].password = password
+            ? decrypt(updatedPasswordResult.rows[0].password)
+            : null;
 
         res.status(200).json(updatedPasswordResult.rows[0]);
     } catch (err) {
