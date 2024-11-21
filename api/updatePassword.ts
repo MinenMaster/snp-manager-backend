@@ -25,7 +25,6 @@ export const updatePassword = async (req: Request, res: Response) => {
         const encryptedPassword = password ? encrypt(password) : undefined;
 
         // check if the password exists and is owned by the user
-
         const passwordResult = await sql`
             SELECT * FROM snp_passwords WHERE id = ${id} AND userId = ${userId};
         `;
@@ -49,7 +48,6 @@ export const updatePassword = async (req: Request, res: Response) => {
         `;
 
         // give back the updated password
-
         const updatedPasswordResult = await sql`
             SELECT * FROM snp_passwords WHERE id = ${id} AND userId = ${userId};
         `;
