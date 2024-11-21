@@ -5,7 +5,7 @@ import { sql } from "@vercel/postgres";
 import {
     getCurrentTimestampISO,
     getCurrentTimestampFormatted,
-} from "./timestamp";
+} from "../tools/timestamp";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 

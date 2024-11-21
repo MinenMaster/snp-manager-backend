@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { sql } from "@vercel/postgres";
-import { authenticateJWT } from "./authenticateJWT";
-import { encrypt } from "./encryption";
+import { authenticateJWT } from "../tools/authenticateJWT";
+import { encrypt } from "../tools/encryption";
 
 export const createPassword = async (req: Request, res: Response) => {
     const user = authenticateJWT(req, res);

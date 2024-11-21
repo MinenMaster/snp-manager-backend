@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
-import { registerUser } from "./register";
-import { loginUser } from "./login";
-import { authenticateJWT } from "./authenticateJWT";
-import { getPasswords } from "./getPasswords";
-import { createPassword } from "./createPassword";
-import { updatePassword } from "./updatePassword";
+import { registerUser } from "./login/register";
+import { loginUser } from "./login/login";
+import { authenticateJWT } from "./tools/authenticateJWT";
+import { getPasswords } from "./passwords/getPasswords";
+import { createPassword } from "./passwords/createPassword";
+import { updatePassword } from "./passwords/updatePassword";
 
 var cors = require("cors");
 const app = express();
@@ -34,3 +34,33 @@ app.get("/passwords", getPasswords);
 app.post("/passwords", createPassword);
 
 app.put("/passwords/:id", updatePassword);
+
+app.get("/categories", (req: Request, res: Response) => {
+    res.json({ message: "This is the categories endpoint." });
+
+    // TODO: implement this endpoint
+});
+
+app.post("/categories", (req: Request, res: Response) => {
+    res.json({ message: "This is the categories endpoint." });
+
+    // TODO: implement this endpoint
+});
+
+app.put("/categories/:id", (req: Request, res: Response) => {
+    res.json({ message: "This is the categories endpoint." });
+
+    // TODO: implement this endpoint
+});
+
+app.get("/settings", (req: Request, res: Response) => {
+    res.json({ message: "This is the settings endpoint." });
+
+    // TODO: implement this endpoint
+});
+
+app.put("/settings", (req: Request, res: Response) => {
+    res.json({ message: "This is the settings endpoint." });
+
+    // TODO: implement this endpoint
+});
