@@ -24,6 +24,16 @@ export const updatePassword = async (req: Request, res: Response) => {
 
         const encryptedPassword = password ? encrypt(password) : undefined;
 
+        // check if the password exists and is owned by the user
+
+        const passwordResult = await sql`
+            SELECT * FROM snp_passwords WHERE id = ${id} AND userId = ${userId};
+        `;
+
+        if (passwordResult.rows.length === 0) {
+            return res.status(404).json({ message: "Password not found" });
+        }
+
         await sql`
             UPDATE snp_passwords
             SET 
@@ -38,9 +48,13 @@ export const updatePassword = async (req: Request, res: Response) => {
                 id = ${id} AND userId = ${userId};
         `;
 
-        //TODO - remove on update stuff on the database
+        // give back the updated password
 
-        res.status(200).json({ message: "Password updated successfully" });
+        const updatedPasswordResult = await sql`
+            SELECT * FROM snp_passwords WHERE id = ${id} AND userId = ${userId};
+        `;
+
+        res.status(200).json(updatedPasswordResult.rows[0]);
     } catch (err) {
         console.error("Error updating password:", err);
         res.status(500).json({ message: "Internal server error" });
