@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { sql } from "@vercel/postgres";
-import { getCurrentTimestampISO } from "../tools/timestamp";
+import { getCurrentTimestampISO } from "./tools/timestamp";
 
 export const registerUser = async (req: Request, res: Response) => {
     const { username, password, email } = req.body;

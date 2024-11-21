@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
-import { registerUser } from "./login/register";
-import { loginUser } from "./login/login";
+import { registerUser } from "./register";
+import { loginUser } from "./login";
 import { authenticateJWT } from "./tools/authenticateJWT";
 import {
     createPassword,
