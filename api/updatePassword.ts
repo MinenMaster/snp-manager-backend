@@ -48,16 +48,16 @@ export const updatePassword = async (req: Request, res: Response) => {
         `;
 
         // give back the updated password
-        const updatedPasswordResult = await sql`
+        const { rows } = await sql`
             SELECT * FROM snp_passwords WHERE id = ${id} AND userId = ${userId};
         `;
 
-        // decrypt the password before sending it back
-        updatedPasswordResult.rows[0].password = password
-            ? decrypt(updatedPasswordResult.rows[0].password)
-            : null;
+        const decryptedRows = rows.map((row) => ({
+            ...row,
+            password: decrypt(row.password),
+        }));
 
-        res.status(200).json(updatedPasswordResult.rows[0]);
+        res.status(200).json(decryptedRows);
     } catch (err) {
         console.error("Error updating password:", err);
         res.status(500).json({ message: "Internal server error" });
