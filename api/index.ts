@@ -35,6 +35,12 @@ app.post("/passwords", createPassword);
 
 app.put("/passwords/:id", updatePassword);
 
+app.delete("/passwords/:id", (req: Request, res: Response) => {
+    res.json({ message: "This is the passwords endpoint." });
+
+    // TODO: implement this endpoint
+});
+
 app.get("/categories", (req: Request, res: Response) => {
     res.json({ message: "This is the categories endpoint." });
 
