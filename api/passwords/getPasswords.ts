@@ -38,6 +38,11 @@ export const getPasswords = async (req: Request, res: Response) => {
                 p.userId = ${userId};
         `;
 
+        // if no passwords are found, return an empty array
+        if (rows.length === 0) {
+            return res.status(200).json([]);
+        }
+
         const decryptedRows = rows.map((row) => ({
             ...row,
             password: decrypt(row.password),
