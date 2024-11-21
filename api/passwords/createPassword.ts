@@ -27,14 +27,16 @@ export const createPassword = async (req: Request, res: Response) => {
 
         const encryptedPassword = encrypt(password);
 
-        const newPassword = await sql`
+        await sql`
             INSERT INTO snp_passwords 
                 (userId, title, username, password, url, notes, categoryId)
             VALUES 
                 (${userId}, ${title}, ${username}, ${encryptedPassword}, ${url}, ${notes}, ${categoryId});
         `;
 
-        return res.status(201).json(newPassword);
+        return res
+            .status(201)
+            .json({ message: "Password created successfully" });
     } catch (err) {
         console.error("Error creating password:", err);
         return res.status(500).json({ message: "Internal server error" });
