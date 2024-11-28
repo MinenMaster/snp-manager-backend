@@ -14,7 +14,7 @@ import {
     updateCategory,
     deleteCategory,
 } from "./categories";
-import { getSettings, updateSettings, createSettings } from "./settings";
+import { getSettings, updateSettings } from "./settings";
 
 var cors = require("cors");
 const app = express();
