@@ -14,6 +14,7 @@ import {
     updateCategory,
     deleteCategory,
 } from "./categories";
+import { getSettings, updateSettings } from "./settings";
 
 var cors = require("cors");
 const app = express();
@@ -54,14 +55,6 @@ app.put("/categories/:id", updateCategory);
 
 app.delete("/categories/:id", deleteCategory);
 
-app.get("/settings", (req: Request, res: Response) => {
-    res.json({ message: "This is the settings endpoint." });
+app.get("/settings", getSettings);
 
-    // TODO: implement this endpoint
-});
-
-app.put("/settings", (req: Request, res: Response) => {
-    res.json({ message: "This is the settings endpoint." });
-
-    // TODO: implement this endpoint
-});
+app.put("/settings", updateSettings);
