@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { sql } from "@vercel/postgres";
 import { getCurrentTimestampISO } from "./tools/timestamp";
+import { createSettings } from "./settings";
 
 export const registerUser = async (req: Request, res: Response) => {
     const { username, password, email } = req.body;
@@ -25,6 +26,8 @@ export const registerUser = async (req: Request, res: Response) => {
         const currentTimestampISO = getCurrentTimestampISO();
 
         await sql`INSERT INTO snp_users (username, hashed_password, email, createdAt) VALUES (${username}, ${hashedPassword}, ${email}, ${currentTimestampISO})`;
+
+        await createSettings(username);
 
         res.status(201).json({ message: "User registered successfully" });
     } catch (err) {
