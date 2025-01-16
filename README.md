@@ -1,5 +1,7 @@
 # SNP-Manager (ShallNotPass-word Manager)
 
+> Link to the SNP-Manager-Frontend: https://github.com/MinenMaster/snp-manager-frontend
+
 ### Install dependencies
 
 **Node.js:**

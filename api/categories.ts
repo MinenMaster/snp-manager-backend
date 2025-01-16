@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { sql } from "@vercel/postgres";
-import { authenticateJWT } from "../tools/authenticateJWT";
+import { authenticateJWT } from "./tools/authenticateJWT";
 
 export const createCategory = async (req: Request, res: Response) => {
     const user = authenticateJWT(req, res);
