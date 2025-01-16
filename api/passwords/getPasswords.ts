@@ -27,7 +27,7 @@ export const getPasswords = async (req: Request, res: Response) => {
                 p.notes, 
                 p.createdAt, 
                 p.lastUpdatedAt, 
-                c.name AS categoryName
+                c.id AS categoryId
             FROM 
                 snp_passwords p
             LEFT JOIN 
